@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "@types/google-apps-script": "^1.0.66"
+  },
+  "devDependencies": {
+    "notion-api-types": "^1.0.0"
+  }
+}
