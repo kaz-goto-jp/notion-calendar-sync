@@ -2,6 +2,7 @@ import { NotionClientHelper } from "../../helpers/notionClient";
 import { EmptyNotionDatabaseEntity, INotionDatabaseEntity, NotionDatabaseEntity } from "../../entities/notion/database";
 import { NotionPageEntity } from "../../entities/notion/page";
 import { Block, Page } from "notion-api-types/responses";
+import { constant } from "../../constant";
 
 export type NotionQueryResult = {
     "object": string,

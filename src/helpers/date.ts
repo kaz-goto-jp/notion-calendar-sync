@@ -1,4 +1,6 @@
-namespace dateHelper {
+import { constant } from "../constant";
+
+export namespace dateHelper {
     let currentDate: Date;
     export function getPreviousIntervalDate(): Date {
         if (currentDate === undefined) {

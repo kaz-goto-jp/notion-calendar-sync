@@ -1,10 +1,9 @@
-import { Block, Database, DatabaseProperty, File, Page, User } from "notion-api-types/responses";
+import { Database, DatabaseProperty, File, User } from "notion-api-types/responses";
 import { External } from "notion-api-types/responses/files";
 import { Emoji } from "notion-api-types/responses/global";
 import { PageId, Workspace } from "notion-api-types/responses/parents";
 import { Text } from "notion-api-types/responses/rich-texts";
-import { NotionDatabaseClient, NotionQueryResult } from "../../apiClients/notion/database";
-import { NotionPageEntity } from "./page";
+import { config } from "../../config/config";
 
 export interface INotionDatabaseEntity extends Database {
     object: "database";

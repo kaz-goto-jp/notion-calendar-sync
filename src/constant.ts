@@ -1,4 +1,4 @@
-namespace constant {
+export namespace constant {
     // Notion
     export const notion = {
         url: {

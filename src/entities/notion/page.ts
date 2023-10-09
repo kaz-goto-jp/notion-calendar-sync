@@ -1,17 +1,20 @@
-import { File, Page, PageProperty, Parent, User } from "notion-api-types/responses";
+import { File, Page, Parent, User } from "notion-api-types/responses";
 import { External } from "notion-api-types/responses/files";
 import { Emoji } from "notion-api-types/responses/global";
-import { NotionPageClient } from "../../apiClients/notion/page";
 import type { Title, Date as NotionDate, RichText } from "notion-api-types/responses/properties/page";
-import { GoogleCalendarEventEntity } from "../calendar/googleCalendar/event";
 import { NotionBot } from "../../singleton/notion/bot";
+import { config } from "../../config/config";
 
-export type NotionPageProperties = Page["properties"]
+interface Status {
+    id: string;
+    type: "status";
+    status: {id: string, name: string, color: string};
+}
+
+
+type NotionPageProperties = Page["properties"]
     & {
-        [config.notion.properties.title]: Title,
-        [config.notion.properties.date]: NotionDate,
-        [config.notion.googleCalendarIdColumn]: RichText,
-        [config.notion.properties.status]: {id: string, type: "status", status: {id: string, name: string, color: string}}
+        [key: string]: Status
     }
 
 export class NotionPageEntity implements Page {
@@ -27,32 +30,23 @@ export class NotionPageEntity implements Page {
     last_edited_time: string;
     last_edited_by: Pick<User, "object" | "id">;
     archived: boolean;
-    
-    private pageClient: NotionPageClient;
 
     constructor(private original: Page) {
         for (const key in original) {
             this[key] = original[key];
         }
-        // TODO: DI
-        this.pageClient = new NotionPageClient;
     }
 
     get googleCalendarId(): string {
-        return this.properties[config.notion.googleCalendarIdColumn].rich_text[0].plain_text;
+        return (this.properties[config.notion.googleCalendarIdColumn] as RichText).rich_text[0].plain_text;
     }
 
     get hasGoogleCalendarId(): boolean {
-        return this.properties[config.notion.googleCalendarIdColumn].rich_text.length === 0
-    }
-
-    updateGoogleCalendarId(calendar: GoogleCalendarEventEntity) {
-        const calendarId = calendar !== null ? calendar.id : '';
-        return this.pageClient.updateGoogleCalendarId(this.id, calendarId);
+        return (this.properties[config.notion.googleCalendarIdColumn] as RichText).rich_text.length === 0
     }
 
     get status(): string {
-        return this.properties[config.notion.properties.status].status.name;
+        return (this.properties[config.notion.properties.status] as Status).status.name;
     }
 
     get isDeleted(): boolean {
@@ -64,10 +58,10 @@ export class NotionPageEntity implements Page {
     }
 
     get title(): string {
-        return this.properties[config.notion.properties.title].title[0].plain_text;
+        return (this.properties[config.notion.properties.title] as Title).title[0].plain_text;
     }
 
     get startDate(): Date {
-        return new Date(this.properties[config.notion.properties.date].date.start);
+        return new Date((this.properties[config.notion.properties.date] as NotionDate).date.start);
     }
 }

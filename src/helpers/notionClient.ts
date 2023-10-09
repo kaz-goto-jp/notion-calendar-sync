@@ -1,3 +1,5 @@
+import { config } from "../config/config";
+
 export namespace NotionClientHelper {
     export const headers: GoogleAppsScript.URL_Fetch.HttpHeaders = {
         'Authorization': `Bearer ${constant.notion.secret}`,

@@ -1,14 +1,19 @@
-import { INotionDatabaseClient, NotionDatabaseClient, NotionQueryResult } from "../apiClients/notion/database";
-import { INotionDatabaseEntity, NotionDatabaseEntity } from "../entities/notion/database";
-import { INotionUserClient, NotionUserClient } from "../apiClients/notion/user";
+import { INotionDatabaseClient, NotionQueryResult } from "../apiClients/notion/database";
+import { INotionDatabaseEntity } from "../entities/notion/database";
+import { INotionUserClient } from "../apiClients/notion/user";
 import { NotionBot } from "../singleton/notion/bot";
 import { NotionPageEntity } from "../entities/notion/page";
 import { Block } from "notion-api-types/responses";
+import { INotionPageClient } from "../apiClients/notion/page";
+import { ICalendarEventEntity } from "../entities/calendar/event";
+import { dateHelper } from "../helpers/date";
+import { config } from "../config/config";
 
 export class NotionService {
 
     constructor(
         private databaseClient: INotionDatabaseClient,
+        private pageClient: INotionPageClient,
         private userClient: INotionUserClient
     ) {}
 
@@ -69,5 +74,10 @@ export class NotionService {
         }
 
         return pages;
+    }
+
+    updateGoogleCalendarId(page: NotionPageEntity, calendar: ICalendarEventEntity) {
+        const calendarId = calendar !== null ? calendar.id : '';
+        return this.pageClient.updateGoogleCalendarId(page.id, calendarId);
     }
 }

@@ -3,6 +3,8 @@
     "@types/google-apps-script": "^1.0.66"
   },
   "devDependencies": {
-    "notion-api-types": "^1.0.0"
+    "@jest/globals": "^29.6.4",
+    "notion-api-types": "^1.0.0",
+    "ts-jest": "^29.1.1"
   }
 }

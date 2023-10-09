@@ -5,15 +5,18 @@ import { GoogleCalendarClient } from "./apiClients/calendar/googleCalendar/calen
 import { NotionDatabaseClient } from "./apiClients/notion/database";
 import { NotionUserClient } from "./apiClients/notion/user";
 import { EmptyNotionDatabaseEntity } from "./entities/notion/database";
+import { NotionPageClient } from "./apiClients/notion/page";
+import { config } from "./config/config";
+import { NotionDatabase } from "./config/configTypes";
 
 function main() {
-    const notionService = new NotionService(new NotionDatabaseClient(), new NotionUserClient());
+    const notionService = new NotionService(new NotionDatabaseClient(), new NotionPageClient(), new NotionUserClient());
     const calendarService = new CalendarService(new GoogleCalendarClient());
 
     notionService.instantiateBot();
 
     const notionPages: NotionPageEntity[] = config.notion.databases.flatMap(
-        (database: config.NotionDatabase) => {
+        (database: NotionDatabase) => {
             const notionDatabase = notionService.getDatabase(database.id);
 
             if (notionDatabase instanceof EmptyNotionDatabaseEntity){
@@ -30,7 +33,7 @@ function main() {
     notionPages.forEach(
         (page: NotionPageEntity) => {
             const googleCalendarEvent = calendarService.createOrUpdateEventWithNotionPage(calendar, page);
-            page.updateGoogleCalendarId(googleCalendarEvent);
+            notionService.updateGoogleCalendarId(page, googleCalendarEvent);
         }
     )
 }
