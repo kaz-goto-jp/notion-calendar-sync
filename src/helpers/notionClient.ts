@@ -2,7 +2,7 @@ import { config } from "../config/config";
 
 export namespace NotionClientHelper {
     export const headers: GoogleAppsScript.URL_Fetch.HttpHeaders = {
-        'Authorization': `Bearer ${constant.notion.secret}`,
+        'Authorization': `Bearer ${config.notion.secret}`,
         'Content-Type': 'application/json',
         'Notion-Version': '2022-06-28'
     };

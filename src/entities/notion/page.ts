@@ -42,7 +42,7 @@ export class NotionPageEntity implements Page {
     }
 
     get hasGoogleCalendarId(): boolean {
-        return (this.properties[config.notion.googleCalendarIdColumn] as RichText).rich_text.length === 0
+        return (this.properties[config.notion.googleCalendarIdColumn] as RichText).rich_text.length !== 0
     }
 
     get status(): string {
@@ -63,5 +63,10 @@ export class NotionPageEntity implements Page {
 
     get startDate(): Date {
         return new Date((this.properties[config.notion.properties.date] as NotionDate).date.start);
+    }
+
+    get hasDate(): boolean {
+        const dateColumn = (this.properties[config.notion.properties.date] as NotionDate).date;
+        return dateColumn !== undefined && dateColumn !== null;
     }
 }

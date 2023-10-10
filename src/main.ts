@@ -26,7 +26,7 @@ function main() {
             notionService.updateGoogleColumnOf(notionDatabase);
             return  notionService.findTargetPagesOf(notionDatabase);
         }
-    );
+    ).filter((page: NotionPageEntity) => page.hasDate);
 
     const calendar = calendarService.getCalendar(config.calendar.google.id);
 

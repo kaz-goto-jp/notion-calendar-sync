@@ -14,7 +14,7 @@ export class CalendarService {
 
     createOrUpdateEventWithNotionPage(calendar: ICalendarEntity, notionPage: NotionPageEntity): ICalendarEventEntity {
         return notionPage.hasGoogleCalendarId
-                ? this.calendarClient.createEventFromNotionPage(calendar, notionPage)
-                : this.calendarClient.updateEventWithNotionPage(calendar, notionPage);
+                ? this.calendarClient.updateEventWithNotionPage(calendar, notionPage)
+                : this.calendarClient.createEventFromNotionPage(calendar, notionPage);
     }
 }
